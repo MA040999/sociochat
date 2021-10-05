@@ -4,17 +4,18 @@
   max-height: 100vh;
   padding-inline: 10px;
   flex: 2;
+  max-width: 100%;
+  background-color: teal;
+  z-index: 1000;
+  overflow-y: auto;
 }
 .message-creator {
-  position: absolute;
+  position: fixed;
   bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
   background-color: #30332e;
-  padding: 10px;
-  width: 100%;
+  padding: 20px;
   outline: none;
   border: none;
+  color: white;
+  border-radius: 20px;
 }
