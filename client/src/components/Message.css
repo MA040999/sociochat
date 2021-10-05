@@ -1,0 +1,34 @@
+:root {
+  --color1: #010400;
+  --color2: #30332e;
+  --color3: #fffbfc;
+
+  --shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.13);
+  --radius: 20px;
+}
+.message {
+  margin-block: 1rem;
+}
+img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+.message-container {
+  background-color: var(--color2);
+  color: var(--color3);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border-bottom-left-radius: 8px;
+  max-width: 70%;
+}
+.line-one {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.date {
+  margin-left: 55px;
+  margin-top: 10px;
+}
