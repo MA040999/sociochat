@@ -3,6 +3,20 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const { resolve } = require("path");
 const cors = require("cors");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+});
+
+
+io.on("connection", (socket) => {
+  console.log("object")
+});
 
 const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 4000;
@@ -40,6 +54,6 @@ if (isProduction) {
   app.get("*", (req, res) => res.sendFile(resolve(`client/build/index.html`)));
 }
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
