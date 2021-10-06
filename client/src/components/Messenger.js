@@ -1,7 +1,7 @@
-import './Messenger.css'
 import React, { useRef } from 'react'
 import { io } from 'socket.io-client'
 import Chat from './Chat'
+import User from './User'
 
 function Messenger() {
     const socket = useRef(io('http://localhost:4000'))
@@ -9,12 +9,38 @@ function Messenger() {
     
     return (
         <div className='container'>
-            <div style={{flex: 0.5, backgroundColor: 'black', color: 'white'}}>
-                asdasdasd
+            <div className='users-container'>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
             </div>
-            <Chat/>
-            <div style={{flex: 0.5, backgroundColor: 'black', color: 'white'}}>
-                asd
+            <Chat socket={socket}/>
+            <div className='users-container'>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
+                <User/>
             </div>
         </div>
         

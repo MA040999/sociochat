@@ -4,6 +4,8 @@ import {
   AUTH_ERROR,
   VERIFY_AUTH,
   UPDATE_PROFILE,
+  ADD_NOTIFICATION_MSG,
+  REMOVE_NOTIFICATION_MSG,
 } from "./authTypes";
 import app from "../../axiosConfig";
 
@@ -61,7 +63,7 @@ export const verifyRefreshToken = () => {
     try {
       const user = await app.get("/auth/refresh-token");
       dispatch({ type: AUTH, payload: user?.data });
-    } catch {
+    } catch(error) {
       console.log(`error`, error)
       dispatch({ type: LOGOUT });
     }
@@ -97,5 +99,18 @@ export const logout = (history) => {
     } catch (error) {
       console.log(`error`, error)
     }
+  };
+};
+
+export const addNotificationMsg = (msg) => {
+  return {
+    type: ADD_NOTIFICATION_MSG,
+    payload: msg,
+  };
+};
+
+export const removeNotificationMsg = () => {
+  return {
+    type: REMOVE_NOTIFICATION_MSG,
   };
 };

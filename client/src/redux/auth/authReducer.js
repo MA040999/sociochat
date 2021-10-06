@@ -1,9 +1,10 @@
-import { AUTH, AUTH_ERROR, LOGOUT, UPDATE_PROFILE, VERIFY_AUTH } from "./authTypes";
+import { ADD_NOTIFICATION_MSG, AUTH, AUTH_ERROR, LOGOUT, REMOVE_NOTIFICATION_MSG, UPDATE_PROFILE, VERIFY_AUTH } from "./authTypes";
 
 const intitalState = {
   token: null,
   user: null,
   err: "",
+  notificationMsg: null,
 };
 
 const authReducer = (state = intitalState, action) => {
@@ -37,6 +38,16 @@ const authReducer = (state = intitalState, action) => {
       return {
         ...state,
         err: action.payload,
+      };
+    case REMOVE_NOTIFICATION_MSG:
+      return {
+        ...state,
+        notificationMsg: null,
+      };
+    case ADD_NOTIFICATION_MSG:
+      return {
+        ...state,
+        notificationMsg: action.payload,
       };
     default:
       return state;

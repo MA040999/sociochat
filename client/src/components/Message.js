@@ -1,9 +1,8 @@
 import React from 'react'
-import './Message.css'
 
-function Message() {
+function Message({own}) {
     return (
-        <div className="message">
+        <div className={`message ${own === true ? 'own' : ''}`}>
             <div className='line-one'>
                 <img src="/logo192.png" alt="" />
                 <div className='message-container'>
