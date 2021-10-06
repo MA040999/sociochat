@@ -1,15 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import Login from "./components/Login";
-import Messenger from './components/Messenger';
-import NavBar from "./components/NavBar";
+import Messenger from "./components/Messenger";
 import Signup from "./components/Signup";
 import { verifyRefreshToken } from "./redux/auth/authActions";
 
 function App() {
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   const refreshToken = () => {
@@ -27,16 +26,19 @@ function App() {
 
   return (
     <>
-    <NavBar />
-    <Switch>
-      {!user ? <Route path="/login" exact render={() => <Login />} />  : <Route path="/Home" exact component={Messenger}  />}
+      <Switch>
+        {!user ? (
+          <Route path="/login" exact render={() => <Login />} />
+        ) : (
+          <Route path="/Home" exact component={Messenger} />
+        )}
 
-          {user === null && (
-            <Route path="/signup" exact render={() => <Signup />} />
-          )}
+        {user === null && (
+          <Route path="/signup" exact render={() => <Signup />} />
+        )}
 
-          {user ? <Redirect to="/Home" /> : <Redirect to='/login'/>}
-    </Switch>
+        {user ? <Redirect to="/Home" /> : <Redirect to="/login" />}
+      </Switch>
     </>
   );
 }

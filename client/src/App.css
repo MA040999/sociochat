@@ -79,12 +79,14 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 92vh;
+  height: calc(100vh - 58.6px);
   max-height: 100vh;
   padding-inline: 10px;
   flex: 2;
   max-width: 100%;
   z-index: 1000;
+  border-right: 0.5px solid var(--color4);
+  border-left: 0.5px solid var(--color4);
 }
 .messages-container {
   overflow-y: auto;
@@ -124,8 +126,10 @@ img {
 .users-container {
   flex: 0.5;
   overflow-y: auto;
-  height: 92vh;
+  height: calc(100vh - 58.6px);
   font-size: clamp(0.7rem, 1.4vw, 1rem);
+  padding-left: 0.2rem;
+  background-color: var(--color2);
 }
 .user-image {
   width: 2rem;
@@ -145,7 +149,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 100vh;
   gap: clamp(1rem, 10vw, 10rem);
   padding: 5rem;
 }
@@ -257,6 +261,7 @@ img {
   text-transform: uppercase;
   padding-inline: 1rem;
   padding-block: 1.8rem;
+  border-bottom: var(--color4) 1px solid;
 }
 nav {
   display: flex;
@@ -319,6 +324,7 @@ nav li {
   max-width: clamp(1.6rem, 10vw, 4.6rem);
   display: flex;
 }
+/* NAVBAR STYLE END */
 
 @media screen and (max-width: 550px) {
   .login-image-container {
@@ -343,10 +349,14 @@ nav li {
   .container :nth-child(3) {
     order: 2;
   }
+  .chat-container {
+    border: none;
+  }
   .users-container {
     display: flex;
     gap: 2rem;
     padding-inline: 1rem;
+    border-bottom: var(--color4) 1px solid;
   }
   .user-container {
     margin-block: 0.8rem;

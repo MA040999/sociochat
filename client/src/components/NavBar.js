@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { logout } from "../redux/auth/authActions";
 import { Link, useHistory } from "react-router-dom";
 
 function NavBar(props) {
-  let menuRef = useRef();
   const { user, logout } = props;
 
   const history = useHistory();
@@ -13,18 +12,6 @@ function NavBar(props) {
     logout(history);
   };
 
-  // useEffect(() => {
-  //   let handler = (e) => {
-  //     if (!menuRef.current.contains(e.target)) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handler);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handler);
-  //   };
-  // }, []);
-
   return (
     <div className="navbar">
       <div>
@@ -32,7 +19,7 @@ function NavBar(props) {
           <img className="logo" src="logo.png" alt="logo" />
         </Link>
       </div>
-      <nav ref={menuRef}>
+      <nav>
         <ul>
           {user ? (
             <div className="authenticated">
