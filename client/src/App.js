@@ -30,7 +30,7 @@ function App() {
         {!user ? (
           <Route path="/login" exact render={() => <Login />} />
         ) : (
-          <Route path="/Home" exact component={Messenger} />
+          <Route path="/Home" exact render={() => <Messenger user={user} />}/>
         )}
 
         {user === null && (

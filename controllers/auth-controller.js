@@ -227,6 +227,21 @@ const verifyRefreshToken = async (req, res) => {
   return res.status(401).json({ message: "Unauthorized" });
 };
 
+const getUserInfo = async (req, res) => {
+  try {
+    const user = await db.Users.findById(req.params.userId)
+    
+    res.status(200).json({
+        id: user._id,
+        fullname: user.fullname,
+        displayImage: user.displayImage,
+    })
+  } catch (error) {
+    console.log(`error`, error);
+    res.status(500).json(error)
+  }
+}
+
 module.exports = {
   authenticateUser,
   logout,
@@ -234,4 +249,5 @@ module.exports = {
   verifyAuth,
   verifyRefreshToken,
   updateProfile,
+  getUserInfo
 };

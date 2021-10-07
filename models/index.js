@@ -8,4 +8,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 module.exports = {
   Users: require("./Users"),
+  Message: require("./Message"),
+  Conversation: require("./Conversation"),
 };

@@ -121,7 +121,13 @@ img {
   justify-self: center;
   cursor: pointer;
 }
-
+.empty-message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+}
 /* USER STYLES */
 .users-container {
   flex: 0.5;
@@ -132,9 +138,10 @@ img {
   background-color: var(--color2);
 }
 .user-image {
-  width: 1.5rem;
+  width: 2rem;
   align-self: center;
-  height: 1.5rem;
+  height: 2rem;
+  object-fit: cover;
 }
 .user-container {
   display: flex;

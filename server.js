@@ -45,6 +45,8 @@ app.use(cors(corsOptions));
 // app.use("/uploads", express.static("uploads"));
 
 app.use("/auth/", require("./routes/auth"));
+app.use("/conversation/", require("./routes/conversation"));
+app.use("/message/", require("./routes/message"));
 
 if (isProduction) {
   // express will serve up production assets

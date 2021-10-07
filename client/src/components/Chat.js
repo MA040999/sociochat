@@ -4,7 +4,7 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useSelector } from "react-redux";
 
-function Chat({ socket }) {
+function Chat({ socket, selectedCoversation }) {
   const user = useSelector((state) => state.auth.user);
   const [message, setMessage] = useState("");
 
@@ -13,7 +13,7 @@ function Chat({ socket }) {
   };
   return (
     <div className="chat-container">
-      <div className="messages-container">
+      {selectedCoversation ? <div className="messages-container">
         <Message own={true} />
         <Message />
         <Message />
@@ -23,8 +23,8 @@ function Chat({ socket }) {
         <Message own={true} />
         <Message own={true} />
         <Message />
-      </div>
-      <div className="message-creator">
+      </div> : <div className="empty-message-container">Open a conversation to start chatting.</div> }
+      {selectedCoversation ? <div className="message-creator">
         <TextareaAutosize
           name="postInput"
           className="post-input"
@@ -40,7 +40,7 @@ function Chat({ socket }) {
           className="send-icon"
           onClick={handleSubmit}
         />
-      </div>
+      </div> : ''}
     </div>
   );
 }

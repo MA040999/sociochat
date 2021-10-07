@@ -9,5 +9,6 @@ router.get("/logout", authController.logout);
 router.get("/verify-auth", auth, authController.verifyAuth);
 router.put("/update-profile", auth, authController.updateProfile);
 router.get("/refresh-token", authController.verifyRefreshToken);
+router.get("/get-user/:userId", authController.getUserInfo);
 
 module.exports = router;
