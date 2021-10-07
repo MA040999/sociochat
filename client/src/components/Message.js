@@ -1,18 +1,18 @@
 import React from "react";
+import moment from "moment";
 
-function Message({ own }) {
+function Message({ own, text, image, date }) {
   return (
     <div className={`message ${own === true ? "own" : ""}`}>
       <div className="line-one">
-        <img src="/logo192.png" alt="" />
-        <div className="message-container">
-          ashdkjsa hakjsdjkahs hdashdkjsa hakjsdjkahs hdaskjdaskjdhsa asdahsd
-          ajkhdssadash kjahsdkjahs kjahsdaskjdaskjdhsa asdahsd ajkhdssadash
-          kjahsdkjahs kjahsdkhas j jahsdsjdkjsahdkjsahd kjasakjhdsjsadj
-          hakjsdkjasdkjsajhdaskjdasj
-        </div>
+        <img
+          className="message-img"
+          src={image ? image : "/displayImage1.png"}
+          alt=""
+        />
+        <div className="message-container">{text}</div>
       </div>
-      <div className="date">3 hours ago</div>
+      <div className="date">{moment(date).fromNow()}</div>
     </div>
   );
 }
