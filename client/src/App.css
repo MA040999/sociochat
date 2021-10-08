@@ -26,6 +26,7 @@
   max-height: clamp(2.2rem, 3vw, 3rem);
   border-radius: 50%;
   align-self: flex-end;
+  object-fit: cover;
 }
 .message-container {
   background-color: var(--color2);
@@ -36,6 +37,8 @@
   font-size: clamp(0.6rem, 1.4vw, 1rem);
   max-width: 70%;
   word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 .line-one {
   display: flex;
@@ -151,14 +154,16 @@
 }
 .user-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 0.5rem;
   background-color: var(--color1);
   border-radius: var(--radius);
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 0.5rem;
   margin: 2rem 0.3rem;
   cursor: pointer;
+}
+.user-name {
+  overflow-wrap: anywhere;
 }
 
 /* LOGIN STYLES */
@@ -381,6 +386,9 @@ nav li {
     margin-block: 0.4em;
     padding: 0.6em 2em;
     min-width: fit-content;
+  }
+  .user-name {
+    overflow-wrap: normal;
   }
   .chat-container {
     margin-top: 1rem;

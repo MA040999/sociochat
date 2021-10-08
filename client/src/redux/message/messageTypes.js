@@ -1,0 +1,2 @@
+export const GET_MESSAGES = "GET_MESSAGES";
+export const UPDATE_NEW_MESSAGE = "UPDATE_NEW_MESSAGE";

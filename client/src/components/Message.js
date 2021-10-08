@@ -10,7 +10,7 @@ function Message({ own, text, image, date }) {
           src={image ? image : "/displayImage1.png"}
           alt=""
         />
-        <div className="message-container">{text}</div>
+        <p className="message-container">{text}</p>
       </div>
       <div className="date">{moment(date).fromNow()}</div>
     </div>
