@@ -141,7 +141,11 @@
   height: calc(100vh - 58.6px);
   font-size: clamp(0.6rem, 1.4vw, 1rem);
   padding-left: 0.2rem;
+  padding-top: 1rem;
   background-color: var(--color2);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 .user-image {
   min-width: clamp(1.8rem, 3vw, 3rem);
@@ -164,6 +168,22 @@
 }
 .user-name {
   overflow-wrap: anywhere;
+}
+.users-container-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background-color: var(--color4);
+  max-width: fit-content;
+  padding-inline: 1rem;
+  padding-block: 0.2rem;
+}
+.users-continer-div {
+  width: 100%;
+}
+.active-container {
+  background-color: var(--color4);
 }
 
 /* LOGIN STYLES */
@@ -218,12 +238,12 @@
   background-color: transparent;
   text-transform: uppercase;
   padding: 1em 3em;
-  border: 2px solid var(--color4);
+  box-shadow: 0 0 0 2pt var(--color4);
+  border: none;
   border-radius: var(--radius);
   position: relative;
   z-index: 3;
-  transition: all 200ms ease;
-  transform-origin: top;
+  transition: box-shadow 300ms ease;
   overflow: hidden;
   cursor: pointer;
 }
@@ -232,15 +252,16 @@
   content: "";
   position: absolute;
   opacity: 0;
-  /* border-radius: var(--radius); */
   z-index: -1;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border: 10px solid var(--color4);
-  transition: opacity 200ms ease;
+  transition: opacity 300ms ease;
   background-color: var(--color4);
+}
+.login-btn:hover {
+  box-shadow: none;
 }
 .login-btn:hover::before {
   opacity: 1;
@@ -317,13 +338,13 @@ nav li {
   padding-block: 0.8em;
   background-color: transparent;
   border-radius: var(--radius);
-  border: 1px solid var(--color4);
+  box-shadow: 0 0 0 2pt var(--color4);
   font-size: clamp(0.7em, 1.6vw, 0.8em);
   position: relative;
   z-index: 3;
-  transition: transform 200ms ease;
   letter-spacing: 1px;
   overflow: hidden;
+  transition: box-shadow 300ms ease;
 }
 .nav-item::before {
   content: "";
@@ -335,7 +356,10 @@ nav li {
   left: 0;
   right: 0;
   bottom: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 300ms ease;
+}
+.nav-item:hover {
+  box-shadow: none;
 }
 .nav-item:hover::before {
   opacity: 1;
@@ -379,14 +403,20 @@ nav li {
     display: flex;
     gap: 2rem;
     padding-inline: 1rem;
+    padding-top: 0;
     border-bottom: var(--color4) 1px solid;
     min-height: 50px;
+    flex-direction: row;
+  }
+  .users-continer-div {
+    display: flex;
   }
   .user-container {
     margin-block: 0.4em;
     padding: 0.6em 2em;
     min-width: fit-content;
   }
+
   .user-name {
     overflow-wrap: normal;
   }

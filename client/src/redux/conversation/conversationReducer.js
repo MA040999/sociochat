@@ -1,7 +1,7 @@
-import { GET_CONVERSATIONS } from "./conversationTypes";
+import { CREATE_CONVERSATION, GET_CONVERSATIONS } from "./conversationTypes";
 
 const intitalState = {
-  conversations: []
+  conversations: [],
 };
 
 const authReducer = (state = intitalState, action) => {
@@ -9,7 +9,12 @@ const authReducer = (state = intitalState, action) => {
     case GET_CONVERSATIONS:
       return {
         ...state,
-        conversations: action.payload
+        conversations: action.payload,
+      };
+    case CREATE_CONVERSATION:
+      return {
+        ...state,
+        conversations: [...state.conversations, action.payload],
       };
     default:
       return state;

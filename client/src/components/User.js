@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import app from "../axiosConfig";
-
-function User({ conversation, user, setSelectedCoversation, onlineUserId }) {
+import { v4 as uuidv4 } from "uuid";
+function User({
+  conversation,
+  user,
+  setSelectedCoversation,
+  onlineUserId,
+  selectedCoversation,
+}) {
   const [userInfo, setUserInfo] = useState(null);
+  const uuid = useRef(uuidv4());
 
   const getUserInfo = async () => {
     const friendId = conversation?.members.find(
@@ -21,8 +28,24 @@ function User({ conversation, user, setSelectedCoversation, onlineUserId }) {
   return (
     userInfo && (
       <div
-        onClick={() => setSelectedCoversation(conversation)}
-        className="user-container"
+        onClick={() =>
+          setSelectedCoversation(
+            conversation
+              ? conversation
+              : { emptyConvo: true, friendId: onlineUserId, uuid: uuid.current }
+          )
+        }
+        className={`user-container ${
+          selectedCoversation
+            ? !conversation
+              ? selectedCoversation.uuid === uuid.current
+                ? "active-container"
+                : ""
+              : selectedCoversation?._id === conversation?._id
+              ? "active-container"
+              : ""
+            : ""
+        }`}
       >
         <img
           className="user-image"

@@ -4,9 +4,15 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import app from "../axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { getMessages, updateNewMessage } from "../redux/message/messageActions";
+import {
+  createNewMessage,
+  getMessages,
+  removeMessages,
+  updateNewMessage,
+} from "../redux/message/messageActions";
+import { createConversation } from "../redux/conversation/conversationActions";
 
-function Chat({ user, socket, selectedCoversation }) {
+function Chat({ user, socket, selectedCoversation, setSelectedCoversation }) {
   const dispatch = useDispatch();
   const [text, setText] = useState("");
   const [friendInfo, setFriendInfo] = useState(null);
@@ -25,17 +31,42 @@ function Chat({ user, socket, selectedCoversation }) {
     //   newMsgs.push(data);
     //   return newMsgs;
     // });
+    if (!text) return null;
+    if (selectedCoversation.emptyConvo) {
+      const conversation = await dispatch(
+        createConversation({
+          senderId: user?.id,
+          receiverId: selectedCoversation.friendId,
+        })
+      );
+      const newMsg = await dispatch(
+        createNewMessage(conversation._id, user?.id, text)
+      );
 
-    const newMsg = await dispatch(
-      updateNewMessage(selectedCoversation._id, user?.id, text)
-    );
-    socket.current.emit("sendMessage", {
-      senderId: user?.id,
-      receiverId: friendInfo?.id,
-      conversationId: selectedCoversation._id,
-      text,
-      id: newMsg._id,
-    });
+      socket.current.emit("sendMessage", {
+        senderId: user?.id,
+        receiverId: selectedCoversation.friendId,
+        conversationId: conversation._id,
+        text,
+        createdAt: newMsg.createdAt,
+        id: newMsg._id,
+      });
+
+      setSelectedCoversation(conversation);
+    } else {
+      const newMsg = await dispatch(
+        updateNewMessage(selectedCoversation._id, user?.id, text)
+      );
+
+      socket.current.emit("sendMessage", {
+        senderId: user?.id,
+        receiverId: friendInfo?.id,
+        conversationId: selectedCoversation._id,
+        text,
+        createdAt: newMsg.createdAt,
+        id: newMsg._id,
+      });
+    }
     setText("");
   };
 
@@ -50,14 +81,13 @@ function Chat({ user, socket, selectedCoversation }) {
     const friendData = await app.get(`/auth/get-user/${friendId}`);
     setFriendInfo(friendData.data);
   };
-  useEffect(() => {
-    socket?.current?.on("getMessage", (senderId, text) => {
-      console.log(`text`, text);
-    });
-  }, []);
 
   useEffect(() => {
-    selectedCoversation && getConversationMessages() && getFriendInfo();
+    dispatch(removeMessages());
+    selectedCoversation &&
+      !selectedCoversation.emptyConvo &&
+      getConversationMessages() &&
+      getFriendInfo();
   }, [selectedCoversation]);
 
   useEffect(() => {
@@ -66,7 +96,7 @@ function Chat({ user, socket, selectedCoversation }) {
 
   return (
     <div className="chat-container">
-      {selectedCoversation ? (
+      {selectedCoversation && !selectedCoversation?.emptyConvo ? (
         <div className="messages-container">
           {messages.map((msg) => (
             <Message
@@ -85,7 +115,9 @@ function Chat({ user, socket, selectedCoversation }) {
         </div>
       ) : (
         <div className="empty-message-container">
-          Open a conversation to start chatting.
+          {!selectedCoversation?.emptyConvo
+            ? `Open a conversation to start chatting.`
+            : `Send a message to initiate coversation.`}
         </div>
       )}
       {selectedCoversation ? (
