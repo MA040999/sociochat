@@ -43,7 +43,7 @@ function Chat({ user, socket, selectedCoversation, setSelectedCoversation }) {
         createNewMessage(conversation._id, user?.id, text)
       );
 
-      socket.current.emit("sendMessage", {
+      socket.current.emit("initiateConvo", {
         senderId: user?.id,
         receiverId: selectedCoversation.friendId,
         conversationId: conversation._id,

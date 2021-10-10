@@ -53,6 +53,20 @@ io.on("connection", (socket) => {
       });
     }
   );
+
+  socket.on(
+    "initiateConvo",
+    ({ senderId, receiverId, conversationId, text, id, createdAt }) => {
+      const user = getUser(receiverId);
+      io.to(user?.socketId).emit("getNewConvo", {
+        senderId,
+        text,
+        conversationId,
+        id,
+        createdAt,
+      });
+    }
+  );
 });
 
 const isProduction = process.env.NODE_ENV === "production";

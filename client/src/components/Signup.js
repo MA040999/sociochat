@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { addNotificationMsg, signup } from "../redux/auth/authActions";
 import { validateEmail } from "../common/common";
 
-function Signup() {
+function Signup({ socket }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
@@ -20,7 +20,7 @@ function Signup() {
     } else {
       if (validateEmail(email)) {
         if (password === confirmPassword) {
-          dispatch(signup({ fullname, email, password }, history));
+          dispatch(signup({ fullname, email, password }, history, socket));
         } else {
           dispatch(addNotificationMsg("Passwords are not matching"));
         }

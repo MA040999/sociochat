@@ -186,6 +186,47 @@
   background-color: var(--color4);
 }
 
+/* NOTIFICATION STYLES START */
+.notification-container {
+  position: fixed;
+  width: max-content;
+  padding: clamp(1em, 2vw, 2em);
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 2em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color4);
+  z-index: 100;
+  backdrop-filter: blur(3px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  /* color: var(--color1); */
+  animation: animate-notification 0.4s ease-in-out;
+}
+.notification-container::after {
+  content: "";
+  background: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  transform: scale(1.05);
+  border-radius: var(--radius);
+  filter: blur(10px);
+  opacity: 0.5;
+}
+.notification-container p {
+  letter-spacing: 1px;
+  font-size: clamp(0.6em, 1.5vw, 1em);
+  text-transform: uppercase;
+}
+/* NOTIFICATION STYLES END */
+
 /* LOGIN STYLES */
 .login-container {
   display: flex;
@@ -422,5 +463,16 @@ nav li {
   }
   .chat-container {
     margin-top: 1rem;
+  }
+}
+
+@keyframes animate-notification {
+  0% {
+    top: -100px;
+    /* transform: translate(0, 1000px); */
+  }
+  100% {
+    top: 2em;
+    /* transform: translate(0, 0px); */
   }
 }

@@ -6,7 +6,7 @@ import { login } from "../redux/auth/authActions";
 import { validateEmail } from "../common/common";
 import { addNotificationMsg } from "../redux/auth/authActions";
 
-function Login() {
+function Login({ socket }) {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ function Login() {
       dispatch(addNotificationMsg("Please fill both the fields"));
     } else {
       if (validateEmail(email)) {
-        dispatch(login({ email, password }, history));
+        dispatch(login({ email, password }, history, socket));
       } else {
         dispatch(addNotificationMsg("Email address is invalid"));
       }

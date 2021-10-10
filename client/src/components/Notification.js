@@ -4,7 +4,7 @@ import { removeNotificationMsg } from "../redux/auth/authActions";
 
 function Notification() {
   const dispatch = useDispatch();
-  const notificationMsg = useSelector((state) => state.posts.notificationMsg);
+  const notificationMsg = useSelector((state) => state.auth.notificationMsg);
 
   useEffect(() => {
     setTimeout(() => {

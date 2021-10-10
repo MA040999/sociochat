@@ -1,30 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
-import { io } from "socket.io-client";
 import Chat from "./Chat";
 import User from "./User";
 import NavBar from "./NavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { getConversations } from "../redux/conversation/conversationActions";
 import { getMessages, receiveNewMsg } from "../redux/message/messageActions";
-function Messenger({ user }) {
+function Messenger({ user, socket, onlineUsers }) {
   const [selectedCoversation, setSelectedCoversation] = useState(null);
+  const selectedCoversationRef = useRef();
   const onlineUsersRef = useRef([]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const socket = useRef();
+  // const [onlineUsers, setOnlineUsers] = useState([]);
   const dispatch = useDispatch();
   const conversations = useSelector(
     (state) => state.conversation.conversations
   );
 
   useEffect(() => {
-    socket.current = io("ws://localhost:4000");
+    // console.log(`1`);
+    // socket.emit("addUser", user?.id);
 
-    socket.current.emit("addUser", user?.id);
+    // socket.on("getUsers", (users) => {
+    //   const userIds = users.map(({ userId }) => userId);
+    //   setOnlineUsers(userIds);
+    // });
 
-    socket.current.on("getUsers", (users) => {
-      const userIds = users.map(({ userId }) => userId);
-      setOnlineUsers(userIds);
-    });
+    // console.log(`12`);
 
     socket.current.on(
       "getMessage",
@@ -32,10 +32,29 @@ function Messenger({ user }) {
         await dispatch(
           receiveNewMsg(senderId, conversationId, text, id, createdAt)
         );
+      }
+    );
+
+    return () => {
+      socket.current.disconnect();
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    selectedCoversationRef.current = selectedCoversation;
+  }, [selectedCoversation]);
+
+  useEffect(() => {
+    socket.current.on(
+      "getNewConvo",
+      async ({ senderId, conversationId, text, id, createdAt }) => {
+        await dispatch(
+          receiveNewMsg(senderId, conversationId, text, id, createdAt)
+        );
         if (
-          selectedCoversation &&
-          selectedCoversation.emptyConvo &&
-          selectedCoversation.friendId === senderId
+          selectedCoversationRef.current &&
+          selectedCoversationRef.current.emptyConvo &&
+          selectedCoversationRef.current.friendId === senderId
         ) {
           const newConversations = await dispatch(getConversations(user?.id));
           await dispatch(getMessages(conversationId));
@@ -43,16 +62,16 @@ function Messenger({ user }) {
             (convo) => convo._id === conversationId
           );
           setSelectedCoversation(conversation);
-        } else if (!selectedCoversation || !selectedCoversation.emptyConvo) {
+        } else if (
+          !selectedCoversationRef.current ||
+          !selectedCoversationRef.current.emptyConvo ||
+          !selectedCoversationRef.current._id
+        ) {
           await dispatch(getConversations(user?.id));
         }
       }
     );
-
-    return () => {
-      socket.current.disconnect();
-    };
-  }, []);
+  }, [selectedCoversation]);
 
   useEffect(() => {
     dispatch(getConversations(user?.id));
