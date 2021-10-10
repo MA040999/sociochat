@@ -38,7 +38,8 @@ function App() {
     user &&
       socket.current.on("getUsers", (users) => {
         const userIds = users.map(({ userId }) => userId);
-        setOnlineUsers(userIds);
+        const filteredUserIds = userIds.filter((userId) => userId !== user?.id);
+        setOnlineUsers(filteredUserIds);
       });
   }, [user]);
 

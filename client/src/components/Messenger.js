@@ -3,30 +3,52 @@ import Chat from "./Chat";
 import User from "./User";
 import NavBar from "./NavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { getConversations } from "../redux/conversation/conversationActions";
+import {
+  getConversations,
+  removeConversations,
+} from "../redux/conversation/conversationActions";
 import { getMessages, receiveNewMsg } from "../redux/message/messageActions";
 function Messenger({ user, socket, onlineUsers }) {
   const [selectedCoversation, setSelectedCoversation] = useState(null);
+  const [filteredOnlineUsers, setFilteredOnlineUsers] = useState([]);
   const selectedCoversationRef = useRef();
-  const onlineUsersRef = useRef([]);
-  // const [onlineUsers, setOnlineUsers] = useState([]);
   const dispatch = useDispatch();
   const conversations = useSelector(
     (state) => state.conversation.conversations
   );
 
   useEffect(() => {
-    // console.log(`1`);
-    // socket.emit("addUser", user?.id);
+    const users = [];
+    console.log(`useEffect`, onlineUsers);
+    console.log(`conversations`, conversations);
+    const promise = onlineUsers.map((user) => {
+      let exists = false;
+      conversations.some((convo) => {
+        if (convo.members.includes(user)) {
+          exists = true;
+          users.push({
+            onlineUserId: user,
+            convoExists: true,
+            conversation: convo,
+          });
+          return true;
+        }
+      });
+      if (!exists) {
+        users.push({
+          onlineUserId: user,
+          convoExists: false,
+        });
+      }
+    });
 
-    // socket.on("getUsers", (users) => {
-    //   const userIds = users.map(({ userId }) => userId);
-    //   setOnlineUsers(userIds);
-    // });
+    Promise.all(promise).then(() => {
+      setFilteredOnlineUsers(users);
+    });
+  }, [conversations, onlineUsers]);
 
-    // console.log(`12`);
-
-    socket.current.on(
+  useEffect(() => {
+    socket?.current?.on(
       "getMessage",
       async ({ senderId, conversationId, text, id, createdAt }) => {
         await dispatch(
@@ -36,7 +58,7 @@ function Messenger({ user, socket, onlineUsers }) {
     );
 
     return () => {
-      socket.current.disconnect();
+      socket?.current?.disconnect();
     };
   }, [socket]);
 
@@ -45,7 +67,7 @@ function Messenger({ user, socket, onlineUsers }) {
   }, [selectedCoversation]);
 
   useEffect(() => {
-    socket.current.on(
+    socket?.current?.on(
       "getNewConvo",
       async ({ senderId, conversationId, text, id, createdAt }) => {
         await dispatch(
@@ -104,45 +126,30 @@ function Messenger({ user, socket, onlineUsers }) {
         <div className="users-container">
           <h4 className="users-container-heading">Online Users</h4>
           <div className="users-continer-div">
-            {onlineUsers &&
-              onlineUsers.map((onlineUser) => {
-                let convoExists = false;
-                if (onlineUser !== user?.id) {
-                  const prevConvo = conversations.map((convo) => {
-                    if (
-                      convo.members.every((member) =>
-                        [user?.id, onlineUser].includes(member)
-                      )
-                    ) {
-                      convoExists = true;
-                      return (
-                        <User
-                          key={onlineUser}
-                          onlineUserId={onlineUser}
-                          conversation={convo}
-                          user={user}
-                          setSelectedCoversation={setSelectedCoversation}
-                          selectedCoversation={selectedCoversation}
-                        />
-                      );
-                    }
-                    // return null;
-                  });
-                  if (convoExists) {
-                    return prevConvo;
-                  } else if (!convoExists) {
-                    return (
-                      <User
-                        key={onlineUser}
-                        onlineUserId={onlineUser}
-                        user={user}
-                        setSelectedCoversation={setSelectedCoversation}
-                        selectedCoversation={selectedCoversation}
-                      />
-                    );
-                  }
+            {filteredOnlineUsers &&
+              filteredOnlineUsers.map((onlineUser) => {
+                if (onlineUser.convoExists) {
+                  return (
+                    <User
+                      key={onlineUser.onlineUserId}
+                      onlineUserId={onlineUser.onlineUserId}
+                      conversation={onlineUser.conversation}
+                      user={user}
+                      setSelectedCoversation={setSelectedCoversation}
+                      selectedCoversation={selectedCoversation}
+                    />
+                  );
+                } else {
+                  return (
+                    <User
+                      key={onlineUser.onlineUserId}
+                      onlineUserId={onlineUser.onlineUserId}
+                      user={user}
+                      setSelectedCoversation={setSelectedCoversation}
+                      selectedCoversation={selectedCoversation}
+                    />
+                  );
                 }
-                return null;
               })}
           </div>
         </div>

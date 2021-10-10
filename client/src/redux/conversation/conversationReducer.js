@@ -1,4 +1,8 @@
-import { CREATE_CONVERSATION, GET_CONVERSATIONS } from "./conversationTypes";
+import {
+  CREATE_CONVERSATION,
+  GET_CONVERSATIONS,
+  REMOVE_CONVERSATIONS,
+} from "./conversationTypes";
 
 const intitalState = {
   conversations: [],
@@ -15,6 +19,11 @@ const authReducer = (state = intitalState, action) => {
       return {
         ...state,
         conversations: [...state.conversations, action.payload],
+      };
+    case REMOVE_CONVERSATIONS:
+      return {
+        ...state,
+        conversations: [],
       };
     default:
       return state;

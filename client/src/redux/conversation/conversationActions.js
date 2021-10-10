@@ -1,4 +1,8 @@
-import { CREATE_CONVERSATION, GET_CONVERSATIONS } from "./conversationTypes";
+import {
+  CREATE_CONVERSATION,
+  GET_CONVERSATIONS,
+  REMOVE_CONVERSATIONS,
+} from "./conversationTypes";
 import app from "../../axiosConfig";
 
 export const getConversations = (userId) => {
@@ -26,5 +30,11 @@ export const createConversation = ({ senderId, receiverId }) => {
     } catch (error) {
       console.log(`error`, error);
     }
+  };
+};
+
+export const removeConversations = () => {
+  return {
+    type: REMOVE_CONVERSATIONS,
   };
 };

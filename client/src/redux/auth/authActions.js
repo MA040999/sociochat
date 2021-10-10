@@ -8,6 +8,7 @@ import {
   REMOVE_NOTIFICATION_MSG,
 } from "./authTypes";
 import app from "../../axiosConfig";
+import { removeConversations } from "../conversation/conversationActions";
 
 export const authError = (error) => {
   return {
@@ -98,6 +99,7 @@ export const logout = (history) => {
     try {
       await app.get("/auth/logout/");
       dispatch({ type: LOGOUT });
+      dispatch(removeConversations());
       history.push("/");
     } catch (error) {
       console.log(`error`, error);
