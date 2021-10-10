@@ -19,8 +19,6 @@ function Messenger({ user, socket, onlineUsers }) {
 
   useEffect(() => {
     const users = [];
-    console.log(`useEffect`, onlineUsers);
-    console.log(`conversations`, conversations);
     const promise = onlineUsers.map((user) => {
       let exists = false;
       conversations.some((convo) => {
