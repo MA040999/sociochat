@@ -32,7 +32,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    socket.current = io("ws://localhost:4000");
+    const url =
+      process.env.NODE_ENV === "production"
+        ? `https://socio-chat.herokuapp.com/`
+        : "http://localhost:4000/";
+
+    console.log(`url`, url);
+
+    socket.current = io(url);
     user && socket.current.emit("addUser", user?.id);
 
     user &&

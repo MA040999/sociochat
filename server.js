@@ -7,10 +7,27 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:3000",
+
+const isProduction = process.env.NODE_ENV === "production";
+const PORT = process.env.PORT || 4000;
+const whitelist = [
+  "https://socio-chat.herokuapp.com",
+  "http://localhost:3000",
+  "http://localhost:19002",
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
+  credentials: true,
+};
+
+const io = new Server(httpServer, {
+  cors: corsOptions,
 });
 
 let users = [];
@@ -68,24 +85,6 @@ io.on("connection", (socket) => {
     }
   );
 });
-
-const isProduction = process.env.NODE_ENV === "production";
-const PORT = process.env.PORT || 4000;
-const whitelist = [
-  "https://socio-chat.herokuapp.com",
-  "http://localhost:3000",
-  "http://localhost:19002",
-];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
