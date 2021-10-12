@@ -7,7 +7,7 @@ import store from "./redux/store";
 const app = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `https://sociochat.herokuapp.com/`
+      ? `https://socio-chat.herokuapp.com/`
       : "http://localhost:4000/",
   withCredentials: true,
 });

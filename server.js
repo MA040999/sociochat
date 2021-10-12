@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
 const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 4000;
 const whitelist = [
-  "https://sociochat.herokuapp.com",
+  "https://socio-chat.herokuapp.com",
   "http://localhost:3000",
   "http://localhost:19002",
 ];
